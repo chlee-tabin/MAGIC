@@ -149,9 +149,10 @@ compute_optimal_t <- function(data, diff_op,
   r2_vec <- rep(NA, t_max)
   data_prev <- data_imputed / sum(data_imputed)
   print('Computing optimal t')
-  for (i in 1:t_max) cat('.')
-  cat('\r')
+#  for (i in 1:t_max) cat('.')
+#  cat('\r')
   for (i in 1:t_max) {
+    print(paste0('...Compute for ', i))
     data_imputed <- diff_op %*% data_imputed
     data_curr <- data_imputed / sum(data_imputed)
     cvec <- c(t(data_curr)) # Unroll the data frame to a vector.
@@ -159,9 +160,7 @@ compute_optimal_t <- function(data, diff_op,
     r2 <- r_square(cvec, pvec)[1]
     r2_vec[i] <- 1 - r2
     data_prev <- data_curr
-    cat('*')
   }
-  cat('\n')
   t_opt <- min(which(r2_vec < 0.05)) + 1
   print(paste('Optimal t =', t_opt))
   if (make_plots) {

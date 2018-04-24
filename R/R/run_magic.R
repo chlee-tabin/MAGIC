@@ -18,7 +18,8 @@
 #' Default: 0.
 #'
 #' @export
-run_magic <- function(data, t_diffusion=0, lib_size_norm=TRUE,
+run_magic <- function(data, t_diffusion=0, t_max=32,
+                      lib_size_norm=TRUE,
                       log_transform=FALSE,
                       pseudo_count=0.1,
                       npca=100, k=12,
@@ -89,7 +90,7 @@ run_magic <- function(data, t_diffusion=0, lib_size_norm=TRUE,
 
   print('Diffusing')
   if (t_diffusion == 0) {
-    t_diffusion <- compute_optimal_t(data, W)
+    t_diffusion <- compute_optimal_t(data, W, t_max)
   }
   W_t <- expm::"%^%"(W, t_diffusion)
 
